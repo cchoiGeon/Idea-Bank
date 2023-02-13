@@ -73,7 +73,7 @@ server.get("/inconvenience_popularity",(req,res)=>{
 server.get("/idea_board",(req,res)=>{ // 1페이지,2페이지 나눠서 i값이 10 단위로 끊어서 보여주기
    db.query('SELECT * FROM idea_board',function(err,idea_board){
       var a = `<tbody>`
-      for(let i=0; i < 10; i++){
+      for(let i=0; i<idea_board.length; i++){
          var b = idea_board[i].title;
          var c = idea_board[i].writer;
          a+=`
