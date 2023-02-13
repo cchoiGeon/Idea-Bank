@@ -22,7 +22,7 @@ var a = function(css,js){
                                     <div class="card shadow-lg border-0 rounded-lg mt-5">
                                         <div class="card-header"><h3 class="text-center font-weight-light my-4">회원가입</h3></div>
                                         <div class="card-body">
-                                            <form action="/register_process">
+                                            <form action="/register/process" method="post">
                                                 <div class="row mb-3">
                                                     <div class="col-md-6">
                                                         <div class="form-floating mb-3 mb-md-0">
@@ -32,13 +32,13 @@ var a = function(css,js){
                                                     </div>
                                                 </div>
                                                 <div class="form-floating mb-3">
-                                                    <input class="form-control" id="inputEmail" name="id" type="email" placeholder="name@example.com" />
+                                                    <input class="form-control" id="inputEmail" name="id" type="text" placeholder="name@example.com" />
                                                     <label for="inputEmail">아이디</label>
                                                 </div>
                                                 <div class="row mb-3">
                                                     <div class="col-md-6">
                                                         <div class="form-floating mb-3 mb-md-0">
-                                                            <input class="form-control" id="inputPassword" name="passowrd" type="password" placeholder="Create a password" />
+                                                            <input class="form-control" id="inputPassword" name="password" type="password" placeholder="Create a password" />
                                                             <label for="inputPassword">비밀번호</label>
                                                         </div>
                                                     </div>
@@ -49,13 +49,17 @@ var a = function(css,js){
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="form-floating mb-3">
+                                                    <input class="form-control" id="cellPhone" name="phone" type="text" placeholder="name@example.com" />
+                                                    <label for="cellPhone">핸드폰 번호</label>
+                                                </div>
                                                 <div class="mt-4 mb-0">
-                                                    <div class="d-grid"><a class="btn btn-primary btn-block" href="login.html">제출</a></div>
+                                                    <div class="d-grid"><button type="submit" class="btn btn-primary btn-block">제출</button></div>
                                                 </div>
                                             </form>
                                         </div>
                                         <div class="card-footer text-center py-3">
-                                            <div class="small"><a href="login.html">로그인하러가기</a></div>
+                                            <div class="small"><a href="/login">로그인하러가기</a></div>
                                         </div>
                                     </div>
                                 </div>
@@ -78,6 +82,41 @@ var a = function(css,js){
                     </footer>
                 </div>
             </div>
+            <script>
+            function autoHypenPhone(str){
+                str = str.replace(/[^0-9]/g, '');
+                var tmp = '';
+                if( str.length < 4){
+                    return str;
+                }else if(str.length < 7){
+                    tmp += str.substr(0, 3);
+                    tmp += '-';
+                    tmp += str.substr(3);
+                    return tmp;
+                }else if(str.length < 11){
+                    tmp += str.substr(0, 3);
+                    tmp += '-';
+                    tmp += str.substr(3, 3);
+                    tmp += '-';
+                    tmp += str.substr(6);
+                    return tmp;
+                }else{              
+                    tmp += str.substr(0, 3);
+                    tmp += '-';
+                    tmp += str.substr(3, 4);
+                    tmp += '-';
+                    tmp += str.substr(7);
+                    return tmp;
+                }
+                return str;
+            }
+            var cellPhone = document.getElementById('cellPhone');
+            cellPhone.onkeyup = function(event){
+                    event = event || window.event;
+                    var _val = this.value.trim();
+                    this.value = autoHypenPhone(_val) ;
+            }
+            </script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
             ${js}
         </body>

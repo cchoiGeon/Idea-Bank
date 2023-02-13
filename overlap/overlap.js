@@ -1,4 +1,5 @@
-var a = function(css,css2,body,js){
+var a = function(css,css2,body,js,loginfalse=`<li><a class="dropdown-item" href="/login">로그인</a></li>
+<li><a class="dropdown-item" href="/register">회원가입</a></li>`,logout=""){
    return `
    <!DOCTYPE html>
    <html lang="en">
@@ -38,8 +39,8 @@ var a = function(css,css2,body,js){
                                <li class="nav-item dropdown">
                                    <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">로그인</a>
                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
-                                       <li><a class="dropdown-item" href="/login">로그인</a></li>
-                                       <li><a class="dropdown-item" href="/register">회원가입</a></li>
+                                       ${loginfalse}
+                                       ${logout}
                                    </ul>
                                </li>
                            </ul>

@@ -1,0 +1,19 @@
+데이터 베이스 이름 : idea_bank;
+테이블 :
+1. 회원가입 
+CREATE TABLE register(
+num INT(11) NOT NULL AUTO_INCREMENT,
+id TEXT NOT NULL,
+password TEXT NOT NULL,
+name TEXT NOT NULL,
+phone TEXT NULL,
+PRIMARY KEY(num)
+);
+CREATE TABLE idea_board(
+num INT(11) NOT NULL AUTO_INCREMENT,
+writer TEXT NOT NULL,
+title TEXT NOT NULL,
+content TEXT NOT NULL,
+time DATETIME NULL,
+PRIMARY KEY(num)
+);

@@ -22,22 +22,22 @@ var a = function(css,js){
                                    <div class="card shadow-lg border-0 rounded-lg mt-5">
                                        <div class="card-header"><h3 class="text-center font-weight-light my-4">로그인</h3></div>
                                        <div class="card-body">
-                                           <form>
+                                           <form action="/login/process" method="post">
                                                <div class="form-floating mb-3">
-                                                   <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
-                                                   <label for="inputEmail">아이디</label>
+                                                   <input class="form-control" id="inputId" name="id" type="text">
+                                                   <label for="inputId">아이디</label>
                                                </div>
                                                <div class="form-floating mb-3">
-                                                   <input class="form-control" id="inputPassword" type="password" placeholder="Password" />
+                                                   <input class="form-control" id="inputPassword" name="password" type="password" placeholder="Password" />
                                                    <label for="inputPassword">비밀번호</label>
                                                </div>
                                                <div class="mt-4 mb-0">
-                                                   <div class="d-grid"><a class="btn btn-primary btn-block" href="index.html">로그인</a></div>
+                                                   <div class="d-grid"><button type="submit" class="btn btn-primary btn-block">로그인</button></div>
                                                </div>
                                            </form>
                                        </div>
                                        <div class="card-footer text-center py-3">
-                                           <div class="small"><a href="register.html">회원가입하러 가기</a></div>
+                                           <div class="small"><a href="/register">회원가입하러 가기</a></div>
                                        </div>
                                    </div>
                                </div>
