@@ -39,12 +39,12 @@ var a = function(a){
             <li class="page-item disabled">
               <a class="page-link">Previous</a>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item"><a class="page-link" href="#">6</a></li>
+            <li class="page-item"><a class="page-link" href="/idea_board/1">1</a></li>
+            <li class="page-item"><a class="page-link" href="/idea_board/2">2</a></li>
+            <li class="page-item"><a class="page-link" href="/idea_board/3">3</a></li>
+            <li class="page-item"><a class="page-link" href="/idea_board/4">4</a></li>
+            <li class="page-item"><a class="page-link" href="/idea_board/5">5</a></li>
+            <li class="page-item"><a class="page-link" href="/idea_board/6">6</a></li>
             <li class="page-item">
               <a class="page-link" href="#">Next</a>
             </li>

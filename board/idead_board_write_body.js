@@ -14,7 +14,7 @@ var a =`
          </tr>
          <tr>
                <td >
-                  <input type="tex" name="idea_title" placeholder="제목을 입력하세요.">
+                  <input type="tex" name="idea_title" placeholder="제목을 입력하세요." style="width: 100%">
                </td>
          </tr>
          <tr>

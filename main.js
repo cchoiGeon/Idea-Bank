@@ -5,6 +5,7 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
+const path = require('path');
 // 기본 틀
 const overlap = require('./overlap/overlap'); // css,css2='',body,js
 const overlap_css = require('./overlap/overlap_css');
@@ -18,6 +19,7 @@ const login_register_css = require('./login,register/login_register_css');
 // 게시판 body,css 
 const board_css = require('./board/board_css');
 const idea_board_body = require('./board/idead_board_body');
+const idea_board_page_body = require('./board/idead_board_page_body');
 const idea_board_write_body = require('./board/idead_board_write_body');
 const inconvenience_board_body = require('./board/inconvenience_board_body');
 const inconvenience_board_write_body = require('./board/inconvenience_board_write_body');
@@ -33,9 +35,9 @@ const db = mysql.createConnection({
  });
  db.connect();
 
-var loginbutton = `<li><a class="dropdown-item" href="/login">로그인</a></li>
+let loginbutton = `<li><a class="dropdown-item" href="/login">로그인</a></li>
 <li><a class="dropdown-item" href="/register">회원가입</a></li>`;
-var logoutbutton = '';  
+let logoutbutton = '';  
  
 function logintrueindex(req,res){
   if(req.session.login){
@@ -80,7 +82,7 @@ server.get("/idea_board",(req,res)=>{ // 1페이지,2페이지 나눠서 i값이
          <tr>
             <td>${i+1}</td>
                <th>
-                  <a href="#!">${b}</a>
+                  <a href="/idea_board/${c}/page/${i+1}">${b}</a>
                </th>
             <td>${c}</td>
          </tr>
@@ -89,6 +91,21 @@ server.get("/idea_board",(req,res)=>{ // 1페이지,2페이지 나눠서 i값이
       a+=`</tbody>`
       res.send(overlap(overlap_css,board_css,idea_board_body(a),overlap_js,loginbutton,logoutbutton));
    })
+});
+
+server.get("/idea_board/:page",(req,res)=>{ 
+   let page = path.parse(req.params.page).base;
+   console.log(page)
+});
+
+server.get("/idea_board/:boardWriter/page/:pageNum",(req,res)=>{
+   let boardWriter = path.parse(req.params.boardWriter).base;
+   let pageNum = path.parse(req.params.pageNum).base;
+   db.query('SELECT * FROM idea_board WHERE writer=?',[boardWriter],function(err,board){
+      let title = board[parseInt(pageNum)-1].title
+      let content = board[parseInt(pageNum)-1].content
+      res.send(overlap(overlap_css,board_css,idea_board_page_body(title,boardWriter,content),overlap_js,loginbutton,logoutbutton));
+   });
 });
 
 server.get("/inconvenience_board",(req,res)=>{
@@ -100,7 +117,6 @@ server.get("/idea_board_write",(req,res)=>{
 });
 server.post("/idea_board_write/process",(req,res)=>{
    let post = req.body
-   console.log(req.session.userid,post.idea_content)
    db.query('INSERT INTO idea_board(writer,title,content,time) VALUES(?,?,?,NOW())',[req.session.userid,post.idea_title,post.idea_content],function(err,result){
       return res.redirect('/idea_board');
    });
