@@ -65,14 +65,23 @@ server.get("/",(req,res)=>{
 });
 
 server.get("/idea_auction",(req,res)=>{
+   if(!req.session.login){
+      return res.redirect('/login');
+    }
    res.send(overlap(overlap_css,'',idea_auction_body,overlap_js,loginbutton,logoutbutton));
 });
 
 server.get("/inconvenience_popularity",(req,res)=>{
+   if(!req.session.login){
+      return res.redirect('/login');
+    }
    res.send(overlap(overlap_css,'',inconvenience_popularity_body,overlap_js,loginbutton,logoutbutton));
 });
 // 게시판
 server.get("/idea_board",(req,res)=>{ // 1페이지,2페이지 나눠서 i값이 10 단위로 끊어서 보여주기
+   if(!req.session.login){
+      return res.redirect('/login');
+    }
    db.query('SELECT * FROM idea_board',function(err,idea_board){
       var a = `<tbody>`
       for(let i=0; i<idea_board.length; i++){
@@ -109,6 +118,9 @@ server.get("/idea_board/:boardWriter/page/:pageNum",(req,res)=>{
 });
 
 server.get("/inconvenience_board",(req,res)=>{
+   if(!req.session.login){
+      return res.redirect('/login');
+    }
    res.send(overlap(overlap_css,board_css,inconvenience_board_body,overlap_js,loginbutton,logoutbutton));
 });
 // 게시판 -> 글쓰기

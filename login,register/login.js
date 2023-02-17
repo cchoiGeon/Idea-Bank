@@ -24,7 +24,7 @@ var a = function(css,js){
                                        <div class="card-body">
                                            <form action="/login/process" method="post">
                                                <div class="form-floating mb-3">
-                                                   <input class="form-control" id="inputId" name="id" type="text">
+                                                   <input class="form-control" id="inputId" name="id" placeholder="Id" type="text">
                                                    <label for="inputId">아이디</label>
                                                </div>
                                                <div class="form-floating mb-3">
