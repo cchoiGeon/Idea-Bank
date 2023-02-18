@@ -1,16 +1,14 @@
-var a = (page,title,writer,content,allcomments) => `
+var a = (page,title,writer,img,content,allcomments) => `
 <section class="notice">
     <div class="page-title">
         <div class="container">
             <div id="board-list">
                 <form action="/idea_board/${writer}/page/${page}/title/${title}/post" method="post">
                     <table border='1' class="table" id="sanyoung">
-                        
                     <thead>
                         <tr>
-                        
                             <th>
-                                제목 : ${page}/${title}
+                                제목 : ${title}
                             </th>
                         </tr>
                         <tr>
@@ -20,7 +18,7 @@ var a = (page,title,writer,content,allcomments) => `
                         </tr>
                         <tr>
                             <td>
-                                사진?
+                                <img src="/${img}">
                             </td>
                         <tr>
                             <td>
@@ -28,7 +26,7 @@ var a = (page,title,writer,content,allcomments) => `
                             </td>
                         </tr>
                     </thead>
-                        ${allcomments}
+                    ${allcomments}
                     <tfoot>
                         <tr>
                             <td colspan="2">

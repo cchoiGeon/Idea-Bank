@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const path = require('path');
+const multer = require("multer");
+const fs = require('fs')
 // 기본 틀
 const overlap = require('./overlap/overlap'); // css,css2='',body,js
 const overlap_css = require('./overlap/overlap_css');
@@ -26,7 +28,7 @@ const inconvenience_board_write_body = require('./board/inconvenience_board_writ
 // 경매 body
 const idea_auction_body = require('./auction/idea_auction_body');
 const inconvenience_popularity_body = require('./auction/미정');
-
+//db 
 const db = mysql.createConnection({
    host : 'localhost',
    user : 'root',
@@ -34,6 +36,18 @@ const db = mysql.createConnection({
    database : 'idea_bank'
  });
  db.connect();
+//MULTER 사용
+const storage = multer.diskStorage({
+   destination: function (req, file, cb) {
+     cb(null,'./uploads') // cb 콜백함수를 통해 전송된 파일 저장 디렉토리 설정
+   },
+   filename: function (req, file, cb) {
+     const ext = path.extname(file.originalname);
+     cb(null,path.basename(file.originalname,ext) + "-" + Date.now() + ext); // cb 콜백함수를 통해 전송된 파일 이름 설정
+   },
+ })
+const upload = multer({storage: storage})
+
 
 let loginbutton = `<li><a class="dropdown-item" href="/login">로그인</a></li>
 <li><a class="dropdown-item" href="/register">회원가입</a></li>`;
@@ -58,6 +72,7 @@ server.use(session({
    saveUninitialized: true,
    store: new FileStore()
  }));
+server.use(express.static("uploads"));
 
 server.get("/",(req,res)=>{
    logintrueindex(req,res)
@@ -130,7 +145,8 @@ server.get("/idea_board/:boardWriter/page/:pageNum/title/:titleName",(req,res)=>
       db.query('SELECT * FROM idea_board WHERE writer=?',[boardWriter],function(err,board){
          let title = board[parseInt(pageNum)-1].title
          let content = board[parseInt(pageNum)-1].content
-         res.send(overlap(overlap_css,board_css,idea_board_page_body(pageNum,title,boardWriter,content,a),overlap_js,loginbutton,logoutbutton));
+         let img = board[parseInt(pageNum)-1].img
+         res.send(overlap(overlap_css,board_css,idea_board_page_body(pageNum,title,boardWriter,img,content,a),overlap_js,loginbutton,logoutbutton));
       });
    });
 });
@@ -155,13 +171,13 @@ server.get("/inconvenience_board",(req,res)=>{
 server.get("/idea_board_write",(req,res)=>{
    res.send(overlap(overlap_css,board_css,idea_board_write_body,overlap_js,loginbutton,logoutbutton));
 });
-server.post("/idea_board_write/process",(req,res)=>{
+
+server.post('/idea_board_write/process',upload.single('imgs'),(req,res) => {
    let post = req.body
-   db.query('INSERT INTO idea_board(writer,title,content,time) VALUES(?,?,?,NOW())',[req.session.userid,post.idea_title,post.idea_content],function(err,result){
+   db.query('INSERT INTO idea_board(writer,title,img,content,time) VALUES(?,?,?,?,NOW())',[req.session.userid,post.idea_title,req.file.filename,post.idea_content],function(err,result){
       return res.redirect('/idea_board');
    });
-});
-
+ });
 server.get("/inconvenience_board_write",(req,res)=>{
    res.send(overlap(overlap_css,board_css,inconvenience_board_write_body,overlap_js,loginbutton,logoutbutton));
 });

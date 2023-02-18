@@ -5,7 +5,7 @@ var a =`
             <h3>아이디어 게시판 글쓰기</h3>
          </div>
    </div>
-   <form action="idea_board_write/process" method="post">
+   <form action="idea_board_write/process" method="post" enctype="multipart/form-data">
       <table border='1' class="table" id="sanyoung">
          <tr>
                <th colspan="2">
@@ -14,15 +14,15 @@ var a =`
          </tr>
          <tr>
                <td >
-                  <input type="tex" name="idea_title" placeholder="제목을 입력하세요." style="width: 100%">
+                  <input type="text" name="idea_title" placeholder="제목을 입력하세요." style="width: 100%">
                </td>
          </tr>
          <tr>
                <td>
                   <div class="input-group mb-3">
-                     <input type="file" class="form-control" id="inputGroupFile02">
+                     <input type="file" name="imgs" class="form-control" id="inputGroupFile02">
                      <label class="input-group-text" for="inputGroupFile02">사진 선택</label>
-                     </div>
+                  </div>
                </td>
          </tr>
          <tr>
