@@ -91,7 +91,7 @@ server.get("/idea_board",(req,res)=>{ // 1페이지,2페이지 나눠서 i값이
          <tr>
             <td>${i+1}</td>
                <th>
-                  <a href="/idea_board/${c}/page/${i+1}">${b}</a>
+                  <a href="/idea_board/${c}/page/${i+1}/title/${b}">${b}</a>
                </th>
             <td>${c}</td>
          </tr>
@@ -107,16 +107,44 @@ server.get("/idea_board/:page",(req,res)=>{
    console.log(page)
 });
 
-server.get("/idea_board/:boardWriter/page/:pageNum",(req,res)=>{
+server.get("/idea_board/:boardWriter/page/:pageNum/title/:titleName",(req,res)=>{
    let boardWriter = path.parse(req.params.boardWriter).base;
    let pageNum = path.parse(req.params.pageNum).base;
-   db.query('SELECT * FROM idea_board WHERE writer=?',[boardWriter],function(err,board){
-      let title = board[parseInt(pageNum)-1].title
-      let content = board[parseInt(pageNum)-1].content
-      res.send(overlap(overlap_css,board_css,idea_board_page_body(title,boardWriter,content),overlap_js,loginbutton,logoutbutton));
+   let boardtitle = path.parse(req.params.titleName).base;
+   db.query('SELECT * FROM idea_comments WHERE board_num=? && writer=? && title=?',[parseInt(pageNum),boardWriter,boardtitle],function(err,result){
+      let comments =[]
+      let a = `
+      <tbody>
+         <tr>
+            <th> 댓글 <th>
+         </tr>`
+      for(let i=0; i < result.length; i++){
+         a+= `
+            <tr>
+               <td>
+                  ${result[i].comments}
+               </td>
+            </tr>`
+      }
+      a+=`</tbody>`
+      db.query('SELECT * FROM idea_board WHERE writer=?',[boardWriter],function(err,board){
+         let title = board[parseInt(pageNum)-1].title
+         let content = board[parseInt(pageNum)-1].content
+         res.send(overlap(overlap_css,board_css,idea_board_page_body(pageNum,title,boardWriter,content,a),overlap_js,loginbutton,logoutbutton));
+      });
    });
 });
 
+server.post("/idea_board/:boardWriter/page/:pageNum/title/:titleName/post",(req,res)=>{
+   let post = req.body;
+   let boardWriter = path.parse(req.params.boardWriter).base;
+   let pageNum = path.parse(req.params.pageNum).base;
+   let boardtitle = path.parse(req.params.titleName).base;
+   let comments = post.comments
+   db.query('INSERT INTO idea_comments(board_num,writer,title,comments) VALUES(?,?,?,?)',[pageNum,boardWriter,boardtitle,comments],function(err,result2){
+      return res.redirect(`/idea_board/${boardWriter}/page/${pageNum}/title/${boardtitle}`);
+   })
+});
 server.get("/inconvenience_board",(req,res)=>{
    if(!req.session.login){
       return res.redirect('/login');

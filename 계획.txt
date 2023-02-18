@@ -18,7 +18,14 @@ time DATETIME NULL,
 PRIMARY KEY(num)
 );
 ////
-
+CREATE TABLE idea_comments(
+num INT(11) NOT NULL AUTO_INCREMENT
+board_num INT(11) NOT NULL,
+writer TEXT NOT NULL,
+title TEXT NOT NULL,
+comments TEXT NULL,
+PRIMARY KEY(num)
+);
 공개적으로 아이디어 낼 수 있는 곳과 비공개적으로 아이디어를 낼 수 있는 곳을 만들까 ?
 
 공개적 -> 소통적 느낌 ?, 비공개적으로 아이디어를 내기 전에 테스트 느낌 ? , 내가 내는 아이디어를 평가 받는 곳 ?  
